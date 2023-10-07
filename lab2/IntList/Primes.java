@@ -33,7 +33,6 @@ public class Primes {
             // Fermat's little theorem
             if (power(a, n - 1, n) != 1)
                 return false;
-
             k--;
         }
 
