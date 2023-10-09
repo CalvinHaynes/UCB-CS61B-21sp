@@ -16,7 +16,6 @@
  */
 public class Collatz {
 
-    /** Buggy implementation of nextNumber! */
     public static int nextNumber(int n) {
         return n % 2 == 0 ? n/2 : 3*n + 1;
     }
