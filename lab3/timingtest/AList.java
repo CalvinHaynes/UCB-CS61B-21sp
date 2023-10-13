@@ -18,7 +18,7 @@ public class AList<Item> {
     private Item[] items;
     private int size;
 
-    private static double RFACTOR = 1.01;
+    private static double RFACTOR = 10;
 
     /** Creates an empty list. */
     public AList() {
