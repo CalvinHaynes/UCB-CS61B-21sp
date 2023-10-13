@@ -1,5 +1,4 @@
 package timingtest;
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stopwatch;
 import org.checkerframework.checker.units.qual.A;
 
@@ -25,18 +24,18 @@ public class TimeSLList {
 
     public static void timeGetLast() {
         // TODO: YOUR CODE HERE
-        SLList<Integer> testSLList = new SLList<>();
         AList<Integer> Ns = new AList<>();
         AList<Double> times = new AList<>();
         AList<Integer> opCounts = new AList<>();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) { //N:1000 ~ 128000
             int pow2 = 1 << i; //求2的i次方
             Ns.addLast(1000 * pow2);
             opCounts.addLast(10000);
         }
 
         for (int i = 0; i < Ns.size(); i++) {
+            SLList<Integer> testSLList = new SLList<>();
             for (int j = 0; j < Ns.get(i); j++) {
                 testSLList.addLast(0);
             }
