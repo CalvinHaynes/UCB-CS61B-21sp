@@ -1,7 +1,6 @@
 package game2048;
 
-import java.util.Formatter;
-import java.util.Observable;
+import java.util.*;
 
 
 /** The state of a game of 2048.
@@ -110,9 +109,23 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
+        String originalBoard = this.board.toString();
+
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
+
+        // 移动
+        for (int i = 0; i < 4; i++) {
+            tiltOneColumn(i);
+        }
+
+        board.setViewingPerspective(Side.NORTH);
+
+        if (!board.toString().equals(originalBoard)) {
+            changed = true;
+        }
 
         checkGameOver();
         if (changed) {
@@ -120,6 +133,90 @@ public class Model extends Observable {
         }
         return changed;
     }
+
+
+    /**
+     * helper method : 用于处理某一列,将原本的问题继续简化了,然后在tile中使用这个
+     */
+     private void tiltOneColumn(int col) {
+         Tile[] tiles = new Tile[4];
+         Tile[] originalTiles = new Tile[4];
+         Stack<Tile> tileStack = new Stack<>();
+         for (int i = 0; i < 4; i++) {
+             tiles[i] = board.tile(col, i);
+             if (tiles[i] != null) {
+                 tileStack.push(tiles[i]);
+             }
+         }
+         System.arraycopy(tiles,0,originalTiles,0,4);
+
+         switch (tileStack.size()) {
+             case 1:
+                 Tile t1 = tileStack.pop();
+                 board.move(col, 3, t1);
+                 break;
+             case 2:
+                 Tile[] t2 = new Tile[2];
+                 for (int i = 0; i < 2; i++) {
+                     t2[i] = tileStack.pop();
+                 }
+                 if (t2[0].value() == t2[1].value()) {
+                     board.move(col, 3, t2[0]);
+                     board.move(col, 3, t2[1]);
+                     score += 2 * t2[0].value();
+                 } else {
+                     board.move(col, 3, t2[0]);
+                     board.move(col, 2, t2[1]);
+                 }
+                 break;
+             case 3:
+                 Tile[] t3 = new Tile[3];
+                 for (int i = 0; i < 3; i++) {
+                     t3[i] = tileStack.pop();
+                 }
+                 if (t3[0].value() == t3[1].value()) {
+                     board.move(col, 3, t3[0]);
+                     board.move(col, 3, t3[1]);
+                     board.move(col, 2, t3[2]);
+                     score += 2 * t3[0].value();
+                 } else if (t3[1].value() == t3[2].value()) {
+                     board.move(col, 3, t3[0]);
+                     board.move(col, 2, t3[1]);
+                     board.move(col, 2, t3[2]);
+                     score += 2 * t3[1].value();
+                 } else {
+                     board.move(col, 3, t3[0]);
+                     board.move(col, 2, t3[1]);
+                     board.move(col, 1, t3[2]);
+                 }
+                 break;
+             case 4:
+                 Tile[] t4 = new Tile[4];
+                 for (int i = 0; i < 4; i++) {
+                     t4[i] = tileStack.pop();
+                 }
+                 if (t4[0].value() == t4[1].value()) {
+                     board.move(col, 3, t4[1]);
+                     score += 2 * t4[0].value();
+                     if (t4[2].value() == t4[3].value()) {
+                         board.move(col, 2, t4[2]);
+                         board.move(col, 2, t4[3]);
+                         score += 2 * t4[2].value();
+                     } else {
+                         board.move(col, 2, t4[2]);
+                         board.move(col, 1, t4[3]);
+                     }
+                 } else if (t4[1].value() == t4[2].value()) {
+                     board.move(col, 2, t4[2]);
+                     board.move(col, 1, t4[3]);
+                     score += 2 * t4[1].value();
+                 } else if (t4[2].value() == t4[3].value()) {
+                     board.move(col, 1, t4[3]);
+                     score += 2 * t4[2].value();
+                 }
+                 break;
+         }
+     }
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
