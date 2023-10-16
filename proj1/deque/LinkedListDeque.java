@@ -1,11 +1,23 @@
 package deque;
 
+/**
+ * The type Linked list deque.
+ *
+ * @param <T> the type parameter
+ */
 public class LinkedListDeque<T> {
     private class StuffNode {
         private T item;
         private StuffNode prev;
         private StuffNode next;
 
+        /**
+         * Instantiates a new Stuff node.
+         *
+         * @param item the item
+         * @param prev the prev
+         * @param next the next
+         */
         public StuffNode(T item, StuffNode prev, StuffNode next) {
             this.item = item;
             this.prev = prev;
@@ -16,6 +28,10 @@ public class LinkedListDeque<T> {
     private StuffNode sentinelNode;
     private int size;
 
+
+    /**
+     * Instantiates a new Linked list deque.
+     */
     public LinkedListDeque() {
         sentinelNode = new StuffNode(null,null,null);
         sentinelNode.prev = sentinelNode;
@@ -23,6 +39,11 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
+    /**
+     * Add first.
+     *
+     * @param item the item
+     */
     public void addFirst(T item) {
         StuffNode first = new StuffNode(item, sentinelNode, sentinelNode.next);
         sentinelNode.next.prev = first;
@@ -30,6 +51,11 @@ public class LinkedListDeque<T> {
         size += 1;
     }
 
+    /**
+     * Add last.
+     *
+     * @param item the item
+     */
     public void addLast(T item) {
         StuffNode last = new StuffNode(item, sentinelNode.prev, sentinelNode);
         sentinelNode.prev.next = last;
@@ -37,14 +63,27 @@ public class LinkedListDeque<T> {
         size += 1;
     }
 
+    /**
+     * Is empty boolean.
+     *
+     * @return the boolean
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Size int.
+     *
+     * @return the int
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Print deque.
+     */
     public void printDeque() {
         StuffNode printNode = sentinelNode.next;
         for (int i = 0; i < size; i++) {
@@ -54,6 +93,11 @@ public class LinkedListDeque<T> {
         System.out.println();
     }
 
+    /**
+     * Remove first t.
+     *
+     * @return the t
+     */
     public T removeFirst() {
         if (isEmpty()){
             return null;
@@ -66,6 +110,11 @@ public class LinkedListDeque<T> {
         }
     }
 
+    /**
+     * Remove last t.
+     *
+     * @return the t
+     */
     public T removeLast() {
         if (isEmpty()){
             return null;
@@ -78,6 +127,12 @@ public class LinkedListDeque<T> {
         }
     }
 
+    /**
+     * Get t.
+     *
+     * @param index the index
+     * @return the t
+     */
     public T get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
